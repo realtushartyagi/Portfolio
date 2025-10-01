@@ -16,3 +16,18 @@ type Route<Path extends string, IdName extends string = 'id'> =
 type DeepReadonly<T> = T extends Function ? T : {
   readonly [K in keyof T]: DeepReadonly<T[K]>;
 };
+
+
+/* =======================================================
+   Branded / Opaque types & Type Guards
+   ======================================================= */
+
+type Brand<K, T> = K & { __brand: T };
+
+type UserId = Brand<string, 'UserId'>;
+const UserId = (s: string): UserId => s as UserId;
+
+function isUserId(x: unknown): x is UserId {
+  return typeof x === 'string' && x.length > 0;
+}
+
