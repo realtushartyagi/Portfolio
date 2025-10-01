@@ -31,3 +31,15 @@ function isUserId(x: unknown): x is UserId {
   return typeof x === 'string' && x.length > 0;
 }
 
+
+/* =======================================================
+   Nominal / Discriminated Unions & Type Narrowing
+   ======================================================= */
+
+type Success<T> = { ok: true; value: T };
+type Failure = { ok: false; error: string };
+type Result<T> = Success<T> | Failure;
+
+function succeed<T>(value: T): Success<T> { return { ok: true, value }; }
+function fail(msg: string): Failure { return { ok: false, error: msg }; }
+
