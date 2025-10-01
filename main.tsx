@@ -43,3 +43,16 @@ type Result<T> = Success<T> | Failure;
 function succeed<T>(value: T): Success<T> { return { ok: true, value }; }
 function fail(msg: string): Failure { return { ok: false, error: msg }; }
 
+/* =======================================================
+   Functional Utilities (typed)
+   ======================================================= */
+
+export const curry =
+  <T extends any[], R>(fn: (...args: T) => R) =>
+  (...args: Partial<T>) =>
+    args.length >= (fn.length) ? (fn as any)(...args as T) : (...more: any[]) => (curry(fn) as any)(...args.concat(more));
+
+export const compose =
+  <A, B, C>(f: (b: B) => C, g: (a: A) => B) =>
+  (a: A) => f(g(a));
+
